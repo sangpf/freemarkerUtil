@@ -17,9 +17,13 @@ public class TestDemo {
         Connection conn = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            String url = "jdbc:mysql://localhost:3306/sang?useUnicode=true&characterEncoding=utf8";
-            String user = "root";
-            String pass = "sang123456";
+//            String url = "jdbc:mysql://localhost:3306/sang?useUnicode=true&characterEncoding=utf8";
+//            String user = "root";
+//            String pass = "sang123456";
+
+            String url = "jdbc:mysql://101.200.166.221:3306/guoyan?useUnicode=true&characterEncoding=utf8";
+            String user = "developer";
+            String pass = "xindongchadb";
 
             conn = DriverManager.getConnection(url, user, pass);
         } catch (ClassNotFoundException e) {

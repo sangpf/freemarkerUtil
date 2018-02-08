@@ -1,0 +1,77 @@
+package ${queryPackageName};
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * 查询专用对象
+ * @author sang
+ *
+ */
+public class ${className}Query {
+
+	<#list fields as field>
+	private ${field.columnTypeName} ${field.columnName};
+	</#list>
+
+	<#list fields as field>
+	public ${field.columnTypeName} ${field.getName}() {
+		return ${field.columnName};
+	}
+	public void ${field.setName}(${field.columnTypeName} ${field.columnName}) {
+		this.${field.columnName} = ${field.columnName};
+	}
+
+	</#list>
+
+	/***********查询字段指定*************************************/
+	private String fields;
+	public String getFields() {
+		return fields;
+	}
+	public void setFields(String fields) {
+		this.fields = fields;
+	}
+	/***********查询字段Like*************************************/
+	private boolean nameLike;
+	public boolean isNameLike() {
+		return nameLike;
+	}
+	public void setNameLike(boolean nameLike) {
+		this.nameLike = nameLike;
+	}
+	
+	/***********order by *************************************/
+	public class FieldOrder{
+		private String field;  //id , name  imgUrl
+		private String order;  // desc asc
+		
+		public FieldOrder(String field, String order) {
+			super();
+			this.field = field;
+			this.order = order;
+		}
+		public String getField() {
+			return field;
+		}
+		public void setField(String field) {
+			this.field = field;
+		}
+		public String getOrder() {
+			return order;
+		}
+		public void setOrder(String order) {
+			this.order = order;
+		}
+		
+	}
+	//orderby 集合
+	private List<FieldOrder> fieldOrders = new ArrayList<FieldOrder>();
+	
+	//按照Id排序
+	public void orderbyId(boolean isAsc){
+		fieldOrders.add(new FieldOrder("id",isAsc == true ? "asc" : "desc"));
+	}
+
+}
