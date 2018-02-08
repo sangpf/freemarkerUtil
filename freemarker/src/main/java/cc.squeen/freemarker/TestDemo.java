@@ -1,11 +1,14 @@
 package cc.squeen.freemarker;
 
+import java.io.File;
+import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TestDemo {
@@ -14,7 +17,7 @@ public class TestDemo {
         Connection conn = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            String url = "jdbc:mysql://localhost:3306/sking?useUnicode=true&characterEncoding=utf8";
+            String url = "jdbc:mysql://localhost:3306/sang?useUnicode=true&characterEncoding=utf8";
             String user = "root";
             String pass = "sang123456";
 
@@ -27,23 +30,38 @@ public class TestDemo {
         return conn;
     }
 
-    public List<FieldModel> getFieldModel_list(String tableName){
+    public static List<FieldModel> getFieldModel_list(String tableName){
         Connection connection = getConnection();
-        String sql = "select * from tableName";
+        String sql = "select * from "+tableName;
 
+        List<FieldModel> filedModel_list = new ArrayList<FieldModel>();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery(sql);
+
             ResultSetMetaData metaData = resultSet.getMetaData();
 
-            metaData.getColumnCount()
+            for (int i=1 ; i <= metaData.getColumnCount(); i++){
+                FieldModel fieldModel = new FieldModel();
+                fieldModel.setColumnName(metaData.getColumnName(i));
+                fieldModel.setColumnType(metaData.getColumnType(i));
+                fieldModel.setColumnTypeName(metaData.getColumnTypeName(i));
+                fieldModel.setCatalogName(metaData.getCatalogName(i));
+                fieldModel.setColumnClassName(metaData.getColumnClassName(i));
+                fieldModel.setColumnDisplaySize(metaData.getColumnDisplaySize(i));
+                fieldModel.setColumnLabel(metaData.getColumnLabel(i));
+                fieldModel.setSchemaName(metaData.getSchemaName(i));
+                fieldModel.setPrecision(metaData.getPrecision(i));
+                fieldModel.setScale(metaData.getScale(i));
+                fieldModel.setTableName(metaData.getTableName(i));
+                fieldModel.setAutoInctement(metaData.isAutoIncrement(i));
 
-
-
+                filedModel_list.add(fieldModel);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        return filedModel_list;
     }
 
     public static void main(String[] args) {

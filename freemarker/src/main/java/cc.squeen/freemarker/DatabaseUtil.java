@@ -11,7 +11,7 @@ public class DatabaseUtil {
     private final static Logger LOGGER = LoggerFactory.getLogger(DatabaseUtil.class);
 
     private static final String DRIVER = "com.mysql.jdbc.Driver";
-    private static final String URL = "jdbc:mysql://localhost:3306/sking?useUnicode=true&characterEncoding=utf8";
+    private static final String URL = "jdbc:mysql://localhost:3306/sang?useUnicode=true&characterEncoding=utf8";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "sang123456";
 

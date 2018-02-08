@@ -2,21 +2,26 @@ package cc.squeen.freemarker;
 
 public class FieldModel {
     private String columnName; // 字段名称
-    private String columnType; // 类型,返回SqlType中的编号
+    private Integer columnType; // 类型,返回SqlType中的编号
     private String columnTypeName; // 数据类型名
     private String catalogName; // Catalog名字
     private String columnClassName; // 数据类型的类
-    private String columnDisplaySize; // 在数据库中类型的最大字符个数
+    private Integer columnDisplaySize; // 在数据库中类型的最大字符个数
     private String columnLabel; // 默认的列的标题
     private String schemaName; // 模式
-    private String precision; // 类型的精确度(类型的长度)
-    private String scale; // 小数点后的位数
+    private Integer precision; // 类型的精确度(类型的长度)
+    private Integer scale; // 小数点后的位数
     private String tableName; // 对应的表名
-    private String isAutoInctement; // 是否自动递增
-    private String isCurrency; // 在数据库中是否为货币型
-    private String isNullable; // 是否为空
-    private String isReadOnly; // 是否为只读
-    private String isSearchable; // 能否出现在where中
+    private boolean isAutoInctement; // 是否自动递增
+    private boolean isCurrency; // 在数据库中是否为货币型
+    private Integer isNullable; // 是否为空
+    private boolean isReadOnly; // 是否为只读
+    private boolean isSearchable; // 能否出现在where中
+
+    private String columnComment; //从数据库中读取备注
+
+    private String setName;
+    private String getName;
 
     public String getColumnName() {
         return columnName;
@@ -26,15 +31,23 @@ public class FieldModel {
         this.columnName = columnName;
     }
 
-    public String getColumnType() {
+    public Integer getColumnType() {
         return columnType;
     }
 
-    public void setColumnType(String columnType) {
+    public void setColumnType(Integer columnType) {
         this.columnType = columnType;
     }
 
     public String getColumnTypeName() {
+        if (columnTypeName == "INT" || columnTypeName == "TINYINT"){
+            columnTypeName = "Integer";
+        }else if (columnTypeName == "VARCHAR"){
+            columnTypeName = "String";
+        }else if (columnTypeName == "DATETIME"){
+            columnTypeName = "Date";
+        }
+
         return columnTypeName;
     }
 
@@ -58,11 +71,11 @@ public class FieldModel {
         this.columnClassName = columnClassName;
     }
 
-    public String getColumnDisplaySize() {
+    public Integer getColumnDisplaySize() {
         return columnDisplaySize;
     }
 
-    public void setColumnDisplaySize(String columnDisplaySize) {
+    public void setColumnDisplaySize(Integer columnDisplaySize) {
         this.columnDisplaySize = columnDisplaySize;
     }
 
@@ -82,19 +95,19 @@ public class FieldModel {
         this.schemaName = schemaName;
     }
 
-    public String getPrecision() {
+    public Integer getPrecision() {
         return precision;
     }
 
-    public void setPrecision(String precision) {
+    public void setPrecision(Integer precision) {
         this.precision = precision;
     }
 
-    public String getScale() {
+    public Integer getScale() {
         return scale;
     }
 
-    public void setScale(String scale) {
+    public void setScale(Integer scale) {
         this.scale = scale;
     }
 
@@ -106,65 +119,85 @@ public class FieldModel {
         this.tableName = tableName;
     }
 
-    public String getIsAutoInctement() {
+    public boolean isAutoInctement() {
         return isAutoInctement;
     }
 
-    public void setIsAutoInctement(String isAutoInctement) {
-        this.isAutoInctement = isAutoInctement;
+    public void setAutoInctement(boolean autoInctement) {
+        isAutoInctement = autoInctement;
     }
 
-    public String getIsCurrency() {
+    public boolean isCurrency() {
         return isCurrency;
     }
 
-    public void setIsCurrency(String isCurrency) {
-        this.isCurrency = isCurrency;
+    public void setCurrency(boolean currency) {
+        isCurrency = currency;
     }
 
-    public String getIsNullable() {
+    public Integer getIsNullable() {
         return isNullable;
     }
 
-    public void setIsNullable(String isNullable) {
+    public void setIsNullable(Integer isNullable) {
         this.isNullable = isNullable;
     }
 
-    public String getIsReadOnly() {
+    public boolean isReadOnly() {
         return isReadOnly;
     }
 
-    public void setIsReadOnly(String isReadOnly) {
-        this.isReadOnly = isReadOnly;
+    public void setReadOnly(boolean readOnly) {
+        isReadOnly = readOnly;
     }
 
-    public String getIsSearchable() {
+    public boolean isSearchable() {
         return isSearchable;
     }
 
-    public void setIsSearchable(String isSearchable) {
-        this.isSearchable = isSearchable;
+    public void setSearchable(boolean searchable) {
+        isSearchable = searchable;
+    }
+
+    public String upperCase(String str) {
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
+    }
+    public String getSetName() {
+        this.setName = "set"+upperCase(this.columnName);
+        return setName;
+    }
+
+    public String getGetName() {
+        this.getName = "get"+upperCase(this.columnName);
+        return getName;
+    }
+
+    public String getColumnComment() {
+        return columnComment;
+    }
+    public void setColumnComment(String columnComment) {
+        this.columnComment = columnComment;
     }
 
     @Override
     public String toString() {
         return "FieldModel{" +
                 "columnName='" + columnName + '\'' +
-                ", columnType='" + columnType + '\'' +
+                ", columnType=" + columnType +
                 ", columnTypeName='" + columnTypeName + '\'' +
                 ", catalogName='" + catalogName + '\'' +
                 ", columnClassName='" + columnClassName + '\'' +
-                ", columnDisplaySize='" + columnDisplaySize + '\'' +
+                ", columnDisplaySize=" + columnDisplaySize +
                 ", columnLabel='" + columnLabel + '\'' +
                 ", schemaName='" + schemaName + '\'' +
-                ", precision='" + precision + '\'' +
-                ", scale='" + scale + '\'' +
+                ", precision=" + precision +
+                ", scale=" + scale +
                 ", tableName='" + tableName + '\'' +
-                ", isAutoInctement='" + isAutoInctement + '\'' +
-                ", isCurrency='" + isCurrency + '\'' +
-                ", isNullable='" + isNullable + '\'' +
-                ", isReadOnly='" + isReadOnly + '\'' +
-                ", isSearchable='" + isSearchable + '\'' +
+                ", isAutoInctement=" + isAutoInctement +
+                ", isCurrency=" + isCurrency +
+                ", isNullable=" + isNullable +
+                ", isReadOnly=" + isReadOnly +
+                ", isSearchable=" + isSearchable +
                 '}';
     }
 }
