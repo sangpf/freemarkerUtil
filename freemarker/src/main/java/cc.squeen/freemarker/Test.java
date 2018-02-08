@@ -2,10 +2,16 @@ package cc.squeen.freemarker;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Test {
     public static void main(String[] args) throws Exception{
@@ -32,4 +38,6 @@ public class Test {
         //关闭流
         writer.close();
     }
+
+
 }
