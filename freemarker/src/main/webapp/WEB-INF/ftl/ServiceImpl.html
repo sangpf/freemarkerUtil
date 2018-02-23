@@ -1,0 +1,38 @@
+package cc.squeen.model;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+@Service
+public class ${up_className}ServiceImpl implements ${up_className}Service{
+
+    @Resource
+    private ${up_className}Dao ${low_className}Dao;
+
+    public void add${up_className}(${up_className} ${low_className}) {
+        ${low_className}Dao.add${up_className}(${low_className});
+    }
+
+    public void delete${up_className}ByKey(Integer id) {
+        ${low_className}Dao.delete${up_className}ByKey(id);
+    }
+
+    public void delete${up_className}ByKeys(Integer[] ids) {
+        ${low_className}Dao.delete${up_className}ByKeys(ids);
+    }
+
+    public void update${up_className}ByKey(${up_className} ${low_className}) {
+        ${low_className}Dao.update${up_className}ByKey(${low_className});
+    }
+
+    public ${up_className} get${up_className}ByKey(Integer id) {
+        return ${low_className}Dao.get${up_className}ByKey(id);
+    }
+
+    public List<${up_className}> get${up_className}List(${up_className}Query ${low_className}Query) {
+        return ${low_className}Dao.get${up_className}List(${low_className}Query);
+    }
+}

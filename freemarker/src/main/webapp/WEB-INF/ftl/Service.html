@@ -1,8 +1,5 @@
 package cc.squeen.model;
 
-import ${modelPackageName}.Project;
-import ${queryPackageName}.ProjectQuery;
-
 import java.util.List;
 
 /**
@@ -10,17 +7,17 @@ import java.util.List;
  * @author sang
  *
  */
-public interface ${className}Service {
+public interface ${up_className}Service {
 	//查询集合
-	public List<${className}> get${className}List(${className}Query entityQuery);
+	public List<${up_className}> get${up_className}List(${up_className}Query entityQuery);
 	//添加
-	public void add${className}(${className} entity);
+	public void add${up_className}(${up_className} entity);
 	//删除
-	public void delete${className}ByKey(Integer id);
+	public void delete${up_className}ByKey(Integer id);
 	//删除 批量
-	public void delete${className}ByKeys(Integer[] ids); //List<Integer>  ids
+	public void delete${up_className}ByKeys(Integer[] ids); //List<Integer>  ids
 	//修改
-	public void update${className}ByKey(${className} entity);
+	public void update${up_className}ByKey(${up_className} entity);
 	//根据id 查询
-	public ${className} get${className}ByKey(Integer id);
+	public ${up_className} get${up_className}ByKey(Integer id);
 }

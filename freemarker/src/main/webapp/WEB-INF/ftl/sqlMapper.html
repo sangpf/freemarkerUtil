@@ -1,14 +1,93 @@
-<?xml version="1.0" encoding="UTF-8" ?>  
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="cn.xdc.core.dao.project.ProjectDao">
-	<!-- resultMap  -->
-	<resultMap type="Project" id="project">
+<mapper namespace="cn.xdc.core.dao.question.QuestionDao">
+
+	<resultMap type="${up_className}" id="${low_className}Map">
+		<result column="${key}" property="${key}"/>
 		<#list fields as field>
 		<result column="${field.columnName}" property="${field.columnName}"/>
 		</#list>
 	</resultMap>
 
+	<sql id="selector">
+		select *
+		from ${tableName}
+	</sql>
 
+	<!-- 查询条件 -->
+	<sql id="where">
+	</sql>
+
+	<!-- Order by -->
+	<sql id="orderBy">
+	</sql>
+
+	<!-- 查询集合 -->
+	<select id="get${up_className}List" parameterType="${up_className}Query" resultMap="${low_className}Map">
+		<include refid="selector"/>
+		<include refid="where"/>
+		<include refid="orderBy"/>
+	</select>
+
+	<!-- 添加 -->
+	<insert id="add${up_className}" parameterType="${up_className}">
+		insert into ${tableName}
+		<trim prefix="(" suffix=")">
+			<#list fields as field>
+				${field.columnName},
+			</#list>
+		</trim>
+		values
+		<trim prefix="(" suffix=")">
+			<#list fields as field>
+				${field.modelColumnName_1},
+			</#list>
+		</trim>
+	</insert>
+
+	<!-- 删除 通过主键 -->
+	<delete id="delete${up_className}ByKey" parameterType="Integer">
+		delete from ${tableName}
+		<where>
+			${key} = ${keyModel}
+		</where>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="delete${up_className}ByKeys" parameterType="Integer">
+		delete from ${tableName}
+		<where>
+			${key} in
+			<foreach collection="array" item="id" open="(" close=")" separator="," >
+				${key}
+			</foreach>
+		</where>
+	</delete>
+
+	<!-- 修改 -->
+	<update id="update${up_className}ByKey" parameterType="${up_className}">
+		update ${tableName}
+		<set>
+			<#list fields as field>
+			<if test="${field.columnName} != null">
+				${field.columnName} = ${field.modelColumnName_1},
+			</if>
+			</#list>
+		</set>
+		<where>
+			${key} = ${keyModel}
+		</where>
+	</update>
+
+	<!-- 通过ID查询一个品牌对象 -->
+	<select id="get${up_className}ByKey" parameterType="Integer" resultMap="${low_className}Map">
+		select *
+		from ${tableName}
+		<where>
+			${key} = ${keyModel}
+		</where>
+	</select>
 
 </mapper>
+

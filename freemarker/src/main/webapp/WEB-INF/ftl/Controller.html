@@ -1,0 +1,64 @@
+package cc.squeen.model;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+
+@RequestMapping(value = "/${low_className}")
+@Controller
+public class ${up_className}Controller {
+    @Autowired
+    private ${up_className}Service ${low_className}Service;
+
+    //添加
+    @ResponseBody
+    @RequestMapping(value = "/add.do",method = RequestMethod.POST)
+    public AjaxResult add(${up_className} ${low_className}){
+        try {
+            ${low_className}Service.add${up_className}(${low_className});
+        } catch (Exception e) {
+            e.printStackTrace();
+            return AjaxResult.errorResult();
+        }
+        return AjaxResult.successResult();
+    }
+
+    //修改
+    @ResponseBody
+    @RequestMapping(value = "/edit.do")
+    public AjaxResult edit(${up_className} ${low_className},ModelMap model){
+
+        try {
+            ${low_className}Service.update${up_className}ByKey(${low_className});
+        } catch (Exception e) {
+            e.printStackTrace();
+            return AjaxResult.errorResult();
+        }
+        return AjaxResult.successResult();
+    }
+
+    //列表
+    @RequestMapping(value = "/list.do")
+    public void list(Integer productId, HttpServletResponse response){
+
+        ${up_className}Query ${low_className}Query = new ${up_className}Query();
+        List<${up_className}> ${low_className}List = ${low_className}Service.get${up_className}List(${low_className}Query);
+
+        JSONObject jo = new JSONObject();
+        jo.put("${low_className}List", ${low_className}List);
+        ResponseUtils.renderJson(response, jo.toString());
+    }
+
+    //删除多个
+    @ResponseBody
+    @RequestMapping(value = "/deletes.do")
+    public AjaxResult deletes(Integer[] ids,ModelMap model){
+        try {
+            ${low_className}Service.delete${up_className}ByKeys(ids);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return AjaxResult.errorResult();
+        }
+        return AjaxResult.successResult();
+    }
+
+}

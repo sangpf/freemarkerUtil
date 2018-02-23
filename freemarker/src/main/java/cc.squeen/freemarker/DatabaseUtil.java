@@ -11,9 +11,9 @@ public class DatabaseUtil {
     private final static Logger LOGGER = LoggerFactory.getLogger(DatabaseUtil.class);
 
     private static final String DRIVER = "com.mysql.jdbc.Driver";
-    private static final String URL = "jdbc:mysql://localhost:3306/sang?useUnicode=true&characterEncoding=utf8";
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "sang123456";
+    private static final String URL = "jdbc:mysql://101.200.166.221:3306/guoyan?useUnicode=true&characterEncoding=utf8";
+    private static final String USERNAME = "developer";
+    private static final String PASSWORD = "xindongchadb";
 
     private static final String SQL = "SELECT * FROM ";// 数据库操作
 
@@ -185,13 +185,59 @@ public class DatabaseUtil {
         }
         return columnComments;
     }
-    public static void main(String[] args) {
-        List<String> tableNames = getTableNames();
-        System.out.println("tableNames:" + tableNames);
-        for (String tableName : tableNames) {
-            System.out.println("ColumnNames:" + getColumnNames(tableName));
-            System.out.println("ColumnTypes:" + getColumnTypes(tableName));
-            System.out.println("ColumnComments:" + getColumnComments(tableName));
+
+    public static List<String> getPRIMARYKEY() {
+        List<String> columnTypes = new ArrayList<String>();
+        //与数据库的连接
+        Connection conn = getConnection();
+        PreparedStatement pStemt = null;
+        String tableSql = "SELECT\n" +
+                "  t.TABLE_NAME,\n" +
+                "  t.CONSTRAINT_TYPE,\n" +
+                "  c.COLUMN_NAME\n" +
+                "FROM\n" +
+                "  INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS t,\n" +
+                "  INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS c\n" +
+                "WHERE\n" +
+                "  t.TABLE_NAME = c.TABLE_NAME\n" +
+                "  AND t.TABLE_SCHEMA = 'guoyan'\n" +
+                "\tAND t.TABLE_NAME = 'gy_answer'\n" +
+                "  AND t.CONSTRAINT_TYPE = 'PRIMARY KEY';";
+        List<String> columnComments = new ArrayList<String>();//列名注释集合
+        ResultSet rs = null;
+        try {
+            pStemt = conn.prepareStatement(tableSql);
+            rs = pStemt.executeQuery();
+
+            while (rs.next()) {
+                String COLUMN_NAME = rs.getString("COLUMN_NAME");
+                System.out.println(COLUMN_NAME);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                    closeConnection(conn);
+                } catch (SQLException e) {
+                    LOGGER.error("getColumnComments close ResultSet and connection failure", e);
+                }
+            }
         }
+        return columnComments;
+    }
+
+    public static void main(String[] args) {
+        getPRIMARYKEY();
+
+//        List<String> tableNames = getTableNames();
+//        System.out.println("tableNames:" + tableNames);
+//        for (String tableName : tableNames) {
+//            System.out.println("ColumnNames:" + getColumnNames(tableName));
+//            System.out.println("ColumnTypes:" + getColumnTypes(tableName));
+//            System.out.println("ColumnComments:" + getColumnComments(tableName));
+//
+//        }
     }
 }

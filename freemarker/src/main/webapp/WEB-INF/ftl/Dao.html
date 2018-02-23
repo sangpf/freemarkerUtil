@@ -1,7 +1,5 @@
-package ${daoPackageName};
+package cc.squeen.model;
 
-import ${modelPackageName}.Project;
-import ${queryPackageName}.ProjectQuery;
 import java.util.List;
 
 /**
@@ -9,22 +7,22 @@ import java.util.List;
  * @author sang
  *
  */
-public interface ${className}Dao {
+public interface ${up_className}Dao {
 	//查询集合
-	public List<${className}> get${className}List(${className}Query entityQuery);
+	public List<${up_className}> get${up_className}List(${up_className}Query entityQuery);
 
 	//查询总记录数
-	public int get${className}Count(${className} entity);
+	public int get${up_className}Count(${up_className} entity);
 	//添加
-	public void add${className}(${className} entity);
+	public void add${up_className}(${up_className} entity);
 	
 	//删除
-	public void delete${className}ByKey(Integer id);
+	public void delete${up_className}ByKey(Integer id);
 	//删除 批量
-	public void delete${className}ByKeys(Integer[] ids); //List<Integer>  ids
+	public void delete${up_className}ByKeys(Integer[] ids); //List<Integer>  ids
 	//修改
-	public void update${className}ByKey(${className} entity);
+	public void update${up_className}ByKey(${up_className} entity);
 
 	//根据 id查询
-	public ${className} get${className}ByKey(Integer id);
+	public ${up_className} get${up_className}ByKey(Integer id);
 }

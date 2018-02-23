@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestDemo {
+public class MysqlUtil {
 
     public static Connection getConnection() {
         Connection conn = null;
@@ -34,6 +34,7 @@ public class TestDemo {
         return conn;
     }
 
+    // 获取表中所有字段信息
     public static List<FieldModel> getFieldModel_list(String tableName){
         Connection connection = getConnection();
         String sql = "select * from "+tableName;
@@ -68,14 +69,55 @@ public class TestDemo {
         return filedModel_list;
     }
 
+    public static List<String> getPrimaryKeys(String tableName){
+        List<String> keys = new ArrayList<String>();
+        Connection connection = getConnection();
+        String sql = "SELECT\n" +
+                "  t.TABLE_NAME,\n" +
+                "  t.CONSTRAINT_TYPE,\n" +
+                "  c.COLUMN_NAME\n" +
+                "FROM\n" +
+                "  INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS t,\n" +
+                "  INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS c\n" +
+                "WHERE\n" +
+                "  t.TABLE_NAME = c.TABLE_NAME\n" +
+                "  AND t.TABLE_SCHEMA = 'guoyan'\n" +
+                "\tAND t.TABLE_NAME = '"+tableName+"'\n" +
+                "  AND t.CONSTRAINT_TYPE = 'PRIMARY KEY';";
+
+        ResultSet resultSet = null;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                String column_name = resultSet.getString("COLUMN_NAME");
+                keys.add(column_name);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+
+            try {
+                connection.close();
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return keys;
+    }
+
     public static void main(String[] args) {
         Connection conn = getConnection();
-        String sql = "select * from u_user";
+        String sql = "select * from gy_question";
         PreparedStatement stmt;
         try {
             stmt = conn.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery(sql);
             ResultSetMetaData data = rs.getMetaData();
+
             for (int i = 1; i <= data.getColumnCount(); i++) {
                 // 获得所有列的数目及实际列数
                 int columnCount = data.getColumnCount();

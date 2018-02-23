@@ -20,8 +20,27 @@ public class FieldModel {
 
     private String columnComment; //从数据库中读取备注
 
+    private String modelColumnName_1;  //代表模型中 #
+    private String modelColumnName_2;  // 代表模型中 $
+
     private String setName;
     private String getName;
+
+    public String getModelColumnName_1() {
+        return "#{"+columnName+"}";
+    }
+
+    public void setModelColumnName_1(String modelColumnName_1) {
+        this.modelColumnName_1 = modelColumnName_1;
+    }
+
+    public String getModelColumnName_2() {
+        return "${"+columnName+"}";
+    }
+
+    public void setModelColumnName_2(String modelColumnName_2) {
+        this.modelColumnName_2 = modelColumnName_2;
+    }
 
     public String getColumnName() {
         return columnName;
@@ -40,11 +59,11 @@ public class FieldModel {
     }
 
     public String getColumnTypeName() {
-        if (columnTypeName == "INT" || columnTypeName == "TINYINT"){
+        if (columnTypeName.equals("INT") || columnTypeName.equals("TINYINT")){
             columnTypeName = "Integer";
-        }else if (columnTypeName == "VARCHAR"){
+        }else if (columnTypeName.equals("VARCHAR")){
             columnTypeName = "String";
-        }else if (columnTypeName == "DATETIME"){
+        }else if (columnTypeName.equals("DATETIME") || columnTypeName.equals("TIMESTAMP")){
             columnTypeName = "Date";
         }
 
@@ -178,6 +197,7 @@ public class FieldModel {
     public void setColumnComment(String columnComment) {
         this.columnComment = columnComment;
     }
+
 
     @Override
     public String toString() {
