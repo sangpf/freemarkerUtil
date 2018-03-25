@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Service
+@Transactional
 public class ${up_className}ServiceImpl implements ${up_className}Service{
 
     @Resource
@@ -32,7 +33,18 @@ public class ${up_className}ServiceImpl implements ${up_className}Service{
         return ${low_className}Dao.get${up_className}ByKey(id);
     }
 
-    public List<${up_className}> get${up_className}List(${up_className}Query ${low_className}Query) {
+    @Transactional(readOnly = true)
+    public List<${up_className}Vo> get${up_className}List(${up_className}Query ${low_className}Query) {
         return ${low_className}Dao.get${up_className}List(${low_className}Query);
     }
+
+    @Transactional(readOnly = true)
+    public Pagination get${up_className}ListWithPage(${up_className}Query ${low_className}Query) {
+        Pagination p = new Pagination(${low_className}Query.getPageNo(),${low_className}Query.getPageSize(),${low_className}Dao.get${up_className}ListCount(${low_className}Query));
+        List<${up_className}Vo> ${low_className}s = ${low_className}Dao.get${up_className}ListWithPage(${low_className}Query);
+
+        p.setList(${low_className}s);
+        return p;
+    }
+
 }

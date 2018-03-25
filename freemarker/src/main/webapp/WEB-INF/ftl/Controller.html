@@ -26,7 +26,6 @@ public class ${up_className}Controller {
     @ResponseBody
     @RequestMapping(value = "/edit.do")
     public AjaxResult edit(${up_className} ${low_className},ModelMap model){
-
         try {
             ${low_className}Service.update${up_className}ByKey(${low_className});
         } catch (Exception e) {
@@ -37,15 +36,31 @@ public class ${up_className}Controller {
     }
 
     //列表
+    @ResponseBody
     @RequestMapping(value = "/list.do")
-    public void list(Integer productId, HttpServletResponse response){
-
+    public AjaxResult list(${up_className} ${low_className}, HttpServletResponse response){
         ${up_className}Query ${low_className}Query = new ${up_className}Query();
         List<${up_className}> ${low_className}List = ${low_className}Service.get${up_className}List(${low_className}Query);
 
-        JSONObject jo = new JSONObject();
-        jo.put("${low_className}List", ${low_className}List);
-        ResponseUtils.renderJson(response, jo.toString());
+        AjaxResult ajaxResult = new AjaxResult();
+        ajaxResult.put("data",${low_className}List);
+        return ajaxResult;
+    }
+
+    //分页列表
+    @ResponseBody
+    @RequestMapping(value = "/listWithPage.do")
+    public AjaxResult ListWithPage(Integer pageNo,${up_className} ${low_className}){
+
+        ${up_className}Query ${low_className}Query = new ${up_className}Query();
+        //设置页号
+        ${low_className}Query.setPageNo(Pagination.cpn(pageNo));
+        //设置每页数
+        ${low_className}Query.setPageSize(5);
+
+        Pagination pagination = ${low_className}Service.get${up_className}ListWithPage(${low_className}Query);
+
+        return AjaxResult.successData(pagination);
     }
 
     //删除多个

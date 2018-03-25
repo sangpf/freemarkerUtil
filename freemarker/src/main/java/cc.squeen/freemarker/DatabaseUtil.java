@@ -231,6 +231,8 @@ public class DatabaseUtil {
     public static void main(String[] args) {
         getPRIMARYKEY();
 
+
+
 //        List<String> tableNames = getTableNames();
 //        System.out.println("tableNames:" + tableNames);
 //        for (String tableName : tableNames) {

@@ -9,17 +9,17 @@ import java.util.List;
  * @author sang
  *
  */
-public class ${up_className}Query {
+public class ${up_className}Query extends BaseQuery{
 
 	<#list fields as field>
 	private ${field.columnTypeName} ${field.columnName};
 	</#list>
 
 	<#list fields as field>
-	public ${field.columnTypeName} ${field.getName}() {
+	public ${field.columnTypeName} get${field.upperColumnName}() {
 		return ${field.columnName};
 	}
-	public void ${field.setName}(${field.columnTypeName} ${field.columnName}) {
+	public void set${field.upperColumnName}(${field.columnTypeName} ${field.columnName}) {
 		this.${field.columnName} = ${field.columnName};
 	}
 
@@ -33,14 +33,17 @@ public class ${up_className}Query {
 	public void setFields(String fields) {
 		this.fields = fields;
 	}
+
 	/***********查询字段Like*************************************/
-	private boolean nameLike;
-	public boolean isNameLike() {
-		return nameLike;
+	<#list fields as field>
+	private boolean ${field.columnName}Like;
+	public boolean is${field.upperColumnName}Like() {
+		return ${field.columnName}Like;
 	}
-	public void setNameLike(boolean nameLike) {
-		this.nameLike = nameLike;
+	public void set${field.upperColumnName}Like(boolean ${field.columnName}Like) {
+		this.${field.columnName}Like = ${field.columnName}Like;
 	}
+	</#list>
 	
 	/***********order by *************************************/
 	public class FieldOrder{

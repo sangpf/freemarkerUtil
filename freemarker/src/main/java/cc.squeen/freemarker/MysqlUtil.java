@@ -1,7 +1,5 @@
 package cc.squeen.freemarker;
 
-import java.io.File;
-import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;

@@ -3,13 +3,6 @@
 
 <mapper namespace="cn.xdc.core.dao.question.QuestionDao">
 
-	<resultMap type="${up_className}" id="${low_className}Map">
-		<result column="${key}" property="${key}"/>
-		<#list fields as field>
-		<result column="${field.columnName}" property="${field.columnName}"/>
-		</#list>
-	</resultMap>
-
 	<sql id="selector">
 		select *
 		from ${tableName}
@@ -17,6 +10,21 @@
 
 	<!-- 查询条件 -->
 	<sql id="where">
+		<where>
+			<if test="${key} != null">
+				and ${key} = ${keyModel}
+			</if>
+			<#list fields as field>
+			<if test="${field.columnName} != null">
+				<if test="${field.columnName}Like == false">
+					and ${field.columnName} = ${field.modelColumnName_1}
+				</if>
+				<if test="${field.columnName}Like == true">
+					and ${field.columnName} like "%"${field.modelColumnName_1}"%"
+				</if>
+			</if>
+			</#list>
+		</where>
 	</sql>
 
 	<!-- Order by -->
@@ -24,14 +32,36 @@
 	</sql>
 
 	<!-- 查询集合 -->
-	<select id="get${up_className}List" parameterType="${up_className}Query" resultMap="${low_className}Map">
+	<select id="get${up_className}List" parameterType="${up_className}Query" resultType="${up_className}Vo">
 		<include refid="selector"/>
 		<include refid="where"/>
 		<include refid="orderBy"/>
 	</select>
 
+	<!-- 分页 -->
+	<select id="get${up_className}ListWithPage" parameterType="${up_className}Query" resultType="${up_className}Vo">
+		<include refid="selector" />
+		<include refid="where" />
+		<include refid="limit" />
+	</select>
+
+	<sql id="limit">
+		<if test="startRow != null">
+			limit ${startRow},${pageSize}
+		</if>
+	</sql>
+
+	<!-- 数据总数 -->
+	<select id="get${up_className}ListCount" parameterType="${up_className}Query" resultType="int">
+		SELECT count(1) FROM ${tableName}
+		<include refid="where"/>
+	</select>
+
 	<!-- 添加 -->
 	<insert id="add${up_className}" parameterType="${up_className}">
+		<selectKey keyProperty="${key}" order="AFTER" resultType="java.lang.Integer">
+			select LAST_INSERT_ID()
+		</selectKey>
 		insert into ${tableName}
 		<trim prefix="(" suffix=")">
 			<#list fields as field>
@@ -59,8 +89,8 @@
 		delete from ${tableName}
 		<where>
 			${key} in
-			<foreach collection="array" item="id" open="(" close=")" separator="," >
-				${key}
+			<foreach collection="array" item="${key}" open="(" close=")" separator="," >
+				${keyModel}
 			</foreach>
 		</where>
 	</delete>
@@ -81,7 +111,7 @@
 	</update>
 
 	<!-- 通过ID查询一个品牌对象 -->
-	<select id="get${up_className}ByKey" parameterType="Integer" resultMap="${low_className}Map">
+	<select id="get${up_className}ByKey" parameterType="Integer" resultType="${up_className}">
 		select *
 		from ${tableName}
 		<where>

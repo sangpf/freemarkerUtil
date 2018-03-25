@@ -14,10 +14,32 @@ import java.util.List;
 public class Test {
     public static void main(String[] args){
 
+        //调查
+//        String tableName = "gy_investigation";
+//        String up_className = "Investigation";
+//        String low_className = "investigation";
+
+        // 答案
+//        String tableName = "gy_answer";
+//        String up_className = "Answer";
+//        String low_className = "answer";
+
         String tableName = "gy_user";
         String up_className = "User";
         String low_className = "user";
 
+//        String tableName = "gy_client";
+//        String up_className = "Client";
+//        String low_className = "client";
+
+//        String tableName = "gy_question";
+//        String up_className = "Question";
+//        String low_className = "question";
+
+//        String tableName = "gy_project";
+//        String up_className = "Project";
+//        String low_className = "project";
+        
         String templateDir = "D:\\JAVA\\IDEA_space\\Test\\freemarker\\src\\main\\webapp\\WEB-INF\\ftl\\";
         Configuration conf = new Configuration();
         //设置模版路径
@@ -55,6 +77,7 @@ public class Test {
 
         try {
             generateModel(conf,field_list,up_className,low_className,targetDir);
+            generateModelVo(conf,up_className,low_className,targetDir);
             generateXml(conf,field_list_noKey,key,up_className,low_className,tableName,targetDir);
             generateDao(conf,up_className,low_className,targetDir);
             generateQuery(conf,field_list,up_className,low_className,targetDir);
@@ -85,8 +108,10 @@ public class Test {
         dataMap.put("key",key);
         dataMap.put("keyModel","#{"+key+"}");
 
-        // 封装固定显示的数据
+        dataMap.put("startRow","#{startRow}");
+        dataMap.put("pageSize","#{pageSize}");
 
+        // 封装固定显示的数据
         Iterator<FieldModel> iterator = field_list.iterator();
         while (iterator.hasNext()){
             FieldModel next = iterator.next();
@@ -216,6 +241,27 @@ public class Test {
         dataMap.put("low_className",low_className);
 
         File targetFile = new File(targetDir + up_className + ".java");
+        //准备输出流
+        FileWriter fileWriter = new FileWriter(targetFile);
+
+        //输出
+        template.process(dataMap,fileWriter);
+        //关闭流
+        fileWriter.close();
+    }
+
+    public static void generateModelVo(Configuration configuration, String up_className,String low_className,
+                                       String targetDir) throws Exception{
+        // 获取模版
+        Template template = configuration.getTemplate("ModelVo.html");
+
+        //准备数据
+        HashMap<String, Object> dataMap = new HashMap<String, Object>();
+
+        dataMap.put("up_className",up_className);
+        dataMap.put("low_className",low_className);
+
+        File targetFile = new File(targetDir + up_className + "Vo.java");
         //准备输出流
         FileWriter fileWriter = new FileWriter(targetFile);
 

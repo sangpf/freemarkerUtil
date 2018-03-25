@@ -2,6 +2,7 @@ package cc.squeen.freemarker;
 
 public class FieldModel {
     private String columnName; // 字段名称
+    private String upperColumnName; // 字段名称
     private Integer columnType; // 类型,返回SqlType中的编号
     private String columnTypeName; // 数据类型名
     private String catalogName; // Catalog名字
@@ -22,9 +23,6 @@ public class FieldModel {
 
     private String modelColumnName_1;  //代表模型中 #
     private String modelColumnName_2;  // 代表模型中 $
-
-    private String setName;
-    private String getName;
 
     public String getModelColumnName_1() {
         return "#{"+columnName+"}";
@@ -181,15 +179,15 @@ public class FieldModel {
     public String upperCase(String str) {
         return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
-    public String getSetName() {
-        this.setName = "set"+upperCase(this.columnName);
-        return setName;
-    }
-
-    public String getGetName() {
-        this.getName = "get"+upperCase(this.columnName);
-        return getName;
-    }
+//    public String getSetName() {
+//        this.setName = "set"+upperCase(this.columnName);
+//        return setName;
+//    }
+//
+//    public String getGetName() {
+//        this.getName = "get"+upperCase(this.columnName);
+//        return getName;
+//    }
 
     public String getColumnComment() {
         return columnComment;
@@ -198,6 +196,10 @@ public class FieldModel {
         this.columnComment = columnComment;
     }
 
+    public String getUpperColumnName() {
+        this.upperColumnName = upperCase(columnName);
+        return upperColumnName;
+    }
 
     @Override
     public String toString() {

@@ -9,15 +9,20 @@ import java.util.List;
  */
 public interface ${up_className}Service {
 	//查询集合
-	public List<${up_className}> get${up_className}List(${up_className}Query entityQuery);
+	public List<${up_className}Vo> get${up_className}List(${up_className}Query ${low_className}Query);
+
+	// 根据条件查询分页查询
+	public Pagination get${up_className}ListWithPage(${up_className}Query projectQuery);
+
 	//添加
-	public void add${up_className}(${up_className} entity);
+	public void add${up_className}(${up_className} ${low_className});
 	//删除
 	public void delete${up_className}ByKey(Integer id);
 	//删除 批量
 	public void delete${up_className}ByKeys(Integer[] ids); //List<Integer>  ids
 	//修改
-	public void update${up_className}ByKey(${up_className} entity);
+	public void update${up_className}ByKey(${up_className} ${low_className});
+
 	//根据id 查询
 	public ${up_className} get${up_className}ByKey(Integer id);
 }
